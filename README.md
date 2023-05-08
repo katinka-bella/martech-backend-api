@@ -10,11 +10,16 @@
 martech-backend-api/
 ├─ api/
 │  ├─ google/
-│  |  ├─ create_cd.py/
-│  |  ├─ create_cm.py/
-│  |  ├─ create_property.py/
+│  |  |  ├─ analytics
+│  |  |  |  ├─ create_cd.py/
+│  |  |  |  ├─ create_cm.py/
+│  |  |  ├─ tag-manager
+│  |  |  |  ├─ create_account.py/
 │  ├─ adobe/
-│  |  ├─ create_report.py/
+│  |  |  ├─ analytics
+│  |  |  |  ├─ create_cd.py/
+│  |  |  ├─ tag-manager
+│  |  |  |  ├─ create_account.py/
 │  ├─ ...
 ├─ README.md
 ```
