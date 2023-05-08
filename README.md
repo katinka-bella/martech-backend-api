@@ -7,7 +7,7 @@
 
 ## structure
 ```
-martech-backend-configuration/
+martech-backend-api/
 ├─ api/
 │  ├─ google/
 │  |  ├─ create_cd.py/
