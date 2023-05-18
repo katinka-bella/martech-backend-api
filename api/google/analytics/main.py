@@ -1,10 +1,19 @@
 import requests
 
 class google_analytics_operator:
-    def create_custom_metric():
+    def create_custom_metrics():
         print("custom metric was created!")
-    
-    def generate_ga4_custom_dimensions(
+
+    def read_custom_metrics():
+        print("custom metric was read!")
+
+    def update_custom_metrics():
+        print("custom metric was updated!")
+
+    def delete_custom_metrics():
+        print("custom metric was deleted!")
+
+    def create_custom_dimensions(
         property_ids: list,
         custom_dimensions: list,
         access_token: str,
@@ -31,7 +40,7 @@ class google_analytics_operator:
                 response = requests.post(url, headers=headers, json=data)
                 print(response.content)
 
-    def get_custom_dimension(df):
+    def read_custom_dimensions(df):
         # Create a new list of dictionaries with the desired keys
         custom_dimention = []
         for index, row in df.iterrows():
