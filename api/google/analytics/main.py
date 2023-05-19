@@ -2,7 +2,9 @@ import requests
 
 class google_analytics_operator:
     def create_custom_metrics(inputs):
-        print("custom metric was created!")
+        print(f"{'#'*30}")
+        print(f"CUSTOM METRICS WERE CREATED !")
+        print(f"{'#'*30}")
 
     def read_custom_metrics():
         print("custom metric was read!")
