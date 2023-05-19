@@ -1,7 +1,7 @@
 import requests
 
 class google_analytics_operator:
-    def create_custom_metrics():
+    def create_custom_metrics(inputs):
         print("custom metric was created!")
 
     def read_custom_metrics():
