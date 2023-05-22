@@ -53,3 +53,30 @@ class google_analytics_operator:
                 "description": row["description"] if not pd.isna(row["description"]) else ""
             })
         return custom_dimention
+    
+
+    def create_google_ads_link(
+        property_ids: list,
+        customer_ids: list,
+        access_token: str,
+        api_key: str
+    ):
+
+        headers = {
+            'Authorization': f'Bearer {access_token}',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+
+        for property_id in property_ids:
+            url = f'https://analyticsadmin.googleapis.com/v1alpha/properties/{property_id}/googleAdsLinks?key={api_key}'
+            print(property_id)
+         
+            for customer_id in customer_ids:
+                data = {
+                    'adsPersonalizationEnabled': 'true',
+                    'customerId': customer_id
+                }
+
+                response = requests.post(url, headers=headers, json=data)
+                print(response.content)
