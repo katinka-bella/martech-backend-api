@@ -74,7 +74,7 @@ class google_analytics_operator:
          
             for customer_id in customer_ids:
                 data = {
-                    'adsPersonalizationEnabled': 'true',
+                    'adsPersonalizationEnabled': 'false',
                     'customerId': customer_id
                 }
 
