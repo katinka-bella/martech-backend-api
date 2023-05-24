@@ -1,19 +1,25 @@
 import requests
 
 class google_analytics_operator:
+
+    
     def create_custom_metrics(inputs):
         print(f"{'#'*30}")
         print(f"CUSTOM METRICS WERE CREATED !")
         print(f"{'#'*30}")
 
+
     def read_custom_metrics():
         print("custom metric was read!")
+
 
     def update_custom_metrics():
         print("custom metric was updated!")
 
+
     def delete_custom_metrics():
         print("custom metric was deleted!")
+
 
     def create_custom_dimensions(
         property_ids: list,
@@ -41,6 +47,7 @@ class google_analytics_operator:
 
                 response = requests.post(url, headers=headers, json=data)
                 print(response.content)
+
 
     def read_custom_dimensions(df):
         # Create a new list of dictionaries with the desired keys
