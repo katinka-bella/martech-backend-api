@@ -1,25 +1,20 @@
 import requests
 
-class google_analytics_operator:
 
-    
+class GoogleAnalyticsOperator:
     def create_custom_metrics(inputs):
         print(f"{'#'*30}")
         print(f"CUSTOM METRICS WERE CREATED !")
         print(f"{'#'*30}")
 
-
     def read_custom_metrics():
         print("custom metric was read!")
-
 
     def update_custom_metrics():
         print("custom metric was updated!")
 
-
     def delete_custom_metrics():
         print("custom metric was deleted!")
-
 
     def create_custom_dimensions(
         property_ids: list,
@@ -37,6 +32,7 @@ class google_analytics_operator:
         for property_id in property_ids:
             url = f'https://analyticsadmin.googleapis.com/v1alpha/properties/{property_id}/customDimensions?key={api_key}'
             print(property_id)
+            
             for item in custom_dimensions:
                 data = {
                     'description': item.get("description"),
@@ -48,9 +44,7 @@ class google_analytics_operator:
                 response = requests.post(url, headers=headers, json=data)
                 print(response.content)
 
-
     def read_custom_dimensions(df):
-        # Create a new list of dictionaries with the desired keys
         custom_dimention = []
         for index, row in df.iterrows():
             custom_dimention.append({
@@ -59,9 +53,9 @@ class google_analytics_operator:
                 "scope": row["scope"] if not pd.isna(row["scope"]) else "",
                 "description": row["description"] if not pd.isna(row["description"]) else ""
             })
+
         return custom_dimention
     
-
     def create_google_ads_link(
         property_ids: list,
         customer_ids: list,
