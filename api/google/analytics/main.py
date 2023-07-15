@@ -28,7 +28,7 @@ class GoogleAnalyticsOperator(GoogleBase):
         
         return self.api_action
 
-    def run_api(self, target_item_list):
+    def run_api_with_input_data(self, target_item_list):
         headers = {
             "Authorization": f"Bearer {self.access_token}",
             "Accept": "application/json",
@@ -52,8 +52,39 @@ class GoogleAnalyticsOperator(GoogleBase):
 
                 if response.status_code == 200:
                     item_count += 1
+                else:
+                    print("ERROR check it")
+                    exit()
 
         print("🔥 API Runn Successful 🔥")
         print(
             f"🔥 For {len(self.property_ids)} GA4 properties were created {item_count} items 🔥"
         )
+
+    def run_api_without_input_data(self):
+        headers = {
+            "Authorization": f"Bearer {self.access_token}",
+            "Accept": "application/json",
+        }
+
+        print(f"✅ {self.api_action} API Running ✅")
+
+        for property_id in self.property_ids:
+            self.api_url = (
+                f"{self.base_url}/{property_id}/{self.api_action}?key={self.api_key}"
+            )
+            print("PROPERTY: ", property_id)
+
+            response = requests.post(
+                    self.api_url, headers=headers
+            )
+            
+            print(response.content)
+
+            if response.status_code == 200:
+                print("🔥 API Runn Successful 🔥")
+                print(
+                    f"🔥 For {len(self.property_ids)} GA4 properties were created {item_count} items 🔥"
+                )
+            else: 
+                print("ERROR check it")
