@@ -81,10 +81,17 @@ class GoogleAnalyticsOperator(GoogleBase):
             
             print(response.content)
 
-            if response.status_code == 200:
-                print("🔥 API Runn Successful 🔥")
-                print(
-                    f"🔥 For {len(self.property_ids)} GA4 properties were created {item_count} items 🔥"
-                )
-            else: 
-                print("ERROR check it")
+            try:
+                status_code = response.status_code
+    
+                if status_code == 200:
+                    print("🔥 API Runn Successful 🔥")
+                    print(
+                        f"🔥 For {len(self.property_ids)} GA4 properties were created {item_count} items 🔥"
+                    )
+                else:
+                    print(status_code)
+
+            except Exception as exc:
+                print(exc)
+                
