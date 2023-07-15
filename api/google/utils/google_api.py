@@ -1,28 +1,24 @@
+from dataclasses import dataclass
 import requests
-from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-SCOPES = [
-        "https://www.googleapis.com/auth/analytics", 
-        "https://www.googleapis.com/auth/analytics.edit"
-]
+# TODO: SCOPE
 
-REDIRECT_URL = "https://localhost:8080/callback"
+@dataclass
+class GoogleBase:
+    client_id: str
+    client_secret: str
+    secret_file_path: str
+    REDIRECT_URL = "https://localhost:8080/callback"
 
-class UtilsGoogle:
-    def create_access_token(
-        CLIENT_ID, CLIENT_SECRET, SCOPES, PATH_SECRETS_FILE, REDIRECT_URL
-    ):
-
+    def create_access_token(self, scopes):
         # Create the flow object
         flow = InstalledAppFlow.from_client_secrets_file(
-            PATH_SECRETS_FILE,
-            scopes=SCOPES,
-            redirect_uri=REDIRECT_URL
+            self.secret_file_path, scopes=scopes, redirect_uri=self.REDIRECT_URL
         )
 
         # Get authorization URL
-        auth_url, _ = flow.authorization_url(access_type='offline')
+        auth_url, _ = flow.authorization_url(access_type="offline")
 
         # Open authorization URL in a web browser and authorize the application
         print("Please go to this URL: {}".format(auth_url))
@@ -33,5 +29,6 @@ class UtilsGoogle:
 
         # Create credentials object from the flow object
         creds = flow.credentials
+        self.access_token = creds.token
 
-        return creds.token
+        return self.access_token

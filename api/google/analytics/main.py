@@ -1,83 +1,59 @@
+from dataclasses import dataclass
 import requests
+from google_auth_oauthlib.flow import InstalledAppFlow
+
+from uitls.google_api import GoogleBase
 
 
-class GoogleAnalyticsOperator:
-    def create_custom_metrics(inputs):
-        print(f"{'#'*30}")
-        print(f"CUSTOM METRICS WERE CREATED !")
-        print(f"{'#'*30}")
+@dataclass
+class GoogleAnalyticsOperator(GoogleBase):
+    property_ids: list
+    api_key: str
+    api_action_list = ["customDimensions", "customMetrics", "googleAdsLinks"]
+    base_url = "https://analyticsadmin.googleapis.com/v1alpha/properties"
 
-    def read_custom_metrics():
-        print("custom metric was read!")
+    def set_api_action(self):
+        print("SELECT NUMBER")
+        for num, item in enumerate(self.api_action_list):
+            print(num, ": ", item)
 
-    def update_custom_metrics():
-        print("custom metric was updated!")
+        try:
+            input_number = int(input())
+            self.api_action = self.api_action_list[input_number]
+            print(f"✅ You chose {self.api_action} method ✅")
 
-    def delete_custom_metrics():
-        print("custom metric was deleted!")
+        except:
+            print("❌Check the input value. Only number❌")
+            exit()
+        
+        return self.api_action
 
-    def create_custom_dimensions(
-        property_ids: list,
-        custom_dimensions: list,
-        access_token: str,
-        api_key: str
-    ):
-
+    def run_api(self, target_item_list):
         headers = {
-            'Authorization': f'Bearer {access_token}',
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            "Authorization": f"Bearer {self.access_token}",
+            "Accept": "application/json",
+            "Content-Type": "application/json",
         }
 
-        for property_id in property_ids:
-            url = f'https://analyticsadmin.googleapis.com/v1alpha/properties/{property_id}/customDimensions?key={api_key}'
-            print(property_id)
-            
-            for item in custom_dimensions:
-                data = {
-                    'description': item.get("description"),
-                    'displayName': item.get("displayName"),
-                    'scope': item.get("scope"),
-                    'parameterName': item.get("parameterName")
-                }
+        print(f"✅ {self.api_action} API Running ✅")
 
-                response = requests.post(url, headers=headers, json=data)
+        item_count = 0
+        for property_id in self.property_ids:
+            self.api_url = (
+                f"{self.base_url}/{property_id}/{self.api_action}?key={self.api_key}"
+            )
+            print("PROPERTY: ", property_id)
+
+            for target_item in target_item_list:
+                response = requests.post(
+                    self.api_url, headers=headers, json=target_item
+                )
                 print(response.content)
 
-    def read_custom_dimensions(df):
-        custom_dimention = []
-        for index, row in df.iterrows():
-            custom_dimention.append({
-                "displayName": row["displayName"] if not pd.isna(row["displayName"]) else "",
-                "parameterName": row["parameterName"] if not pd.isna(row["parameterName"]) else "",
-                "scope": row["scope"] if not pd.isna(row["scope"]) else "",
-                "description": row["description"] if not pd.isna(row["description"]) else ""
-            })
+                if response.status_code == 200:
+                    item_count += 1
 
-        return custom_dimention
-    
-    def create_google_ads_link(
-        property_ids: list,
-        customer_ids: list,
-        access_token: str,
-        api_key: str
-    ):
-
-        headers = {
-            'Authorization': f'Bearer {access_token}',
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-
-        for property_id in property_ids:
-            url = f'https://analyticsadmin.googleapis.com/v1alpha/properties/{property_id}/googleAdsLinks?key={api_key}'
-            print(property_id)
-         
-            for customer_id in customer_ids:
-                data = {
-                    'adsPersonalizationEnabled': 'false',
-                    'customerId': customer_id
-                }
-
-                response = requests.post(url, headers=headers, json=data)
-                print(response.content)
+        print("🔥 API Runn Successful 🔥")
+        print(
+            f"🔥 For {len(self.property_ids)} GA4 properties were created {item_count} items 🔥"
+        )
