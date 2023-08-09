@@ -1,0 +1,41 @@
+name: Upload Google Cloud Storage
+run-name: Upload Google Cloud Storage
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  gcp-application:
+    name: 'GCP Running'
+    runs-on: ubuntu-latest
+    environment: production
+
+    # Add "id-token" with the intended permissions.
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - name: Checkout
+      uses: 'actions/checkout@v3'
+
+    - name: 'Authenticate to Google Cloud'
+      uses: google-github-actions/setup-gcloud@v0.3.0
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SERVICE_KEY }}
+        export_default_credentials: true
+
+    - name: 'Check Project'
+      run: |-
+        gcloud config list
+        
+    - name: 'Upload api files'
+      run: |-
+        gsutil -m cp -r api gs://martech-api-bucket
+        
+    - name: 'Upload utils files'
+      run: |-
+        gsutil -m cp -r utils gs://martech-api-bucket  

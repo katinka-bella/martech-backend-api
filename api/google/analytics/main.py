@@ -1,83 +1,70 @@
+from dataclasses import dataclass
 import requests
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 
-class GoogleAnalyticsOperator:
-    def create_custom_metrics(inputs):
-        print(f"{'#'*30}")
-        print(f"CUSTOM METRICS WERE CREATED !")
-        print(f"{'#'*30}")
+@dataclass
+class GoogleBase:
+    client_id: str
+    client_secret: str
+    secret_file_path: str
+    SCOPES = [
+        "https://www.googleapis.com/auth/analytics",
+        "https://www.googleapis.com/auth/analytics.edit",
+    ]
+    REDIRECT_URL = "https://localhost:8080/callback"
 
-    def read_custom_metrics():
-        print("custom metric was read!")
+    def create_access_token(self):
+        # Create the flow object
+        flow = InstalledAppFlow.from_client_secrets_file(
+            self.secret_file_path, scopes=self.SCOPES, redirect_uri=self.REDIRECT_URL
+        )
 
-    def update_custom_metrics():
-        print("custom metric was updated!")
+        # Get authorization URL
+        auth_url, _ = flow.authorization_url(access_type="offline")
 
-    def delete_custom_metrics():
-        print("custom metric was deleted!")
+        # Open authorization URL in a web browser and authorize the application
+        print("Please go to this URL: {}".format(auth_url))
+        authorization_response = input("Enter the full callback URL: ")
 
-    def create_custom_dimensions(
-        property_ids: list,
-        custom_dimensions: list,
-        access_token: str,
-        api_key: str
-    ):
+        # Get the authorization code from the response
+        flow.fetch_token(authorization_response=authorization_response)
 
-        headers = {
-            'Authorization': f'Bearer {access_token}',
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
+        # Create credentials object from the flow object
+        creds = flow.credentials
+        self.access_token = creds.token
 
-        for property_id in property_ids:
-            url = f'https://analyticsadmin.googleapis.com/v1alpha/properties/{property_id}/customDimensions?key={api_key}'
-            print(property_id)
-            
-            for item in custom_dimensions:
-                data = {
-                    'description': item.get("description"),
-                    'displayName': item.get("displayName"),
-                    'scope': item.get("scope"),
-                    'parameterName': item.get("parameterName")
-                }
+        return self.access_token
 
-                response = requests.post(url, headers=headers, json=data)
-                print(response.content)
 
-    def read_custom_dimensions(df):
-        custom_dimention = []
-        for index, row in df.iterrows():
-            custom_dimention.append({
-                "displayName": row["displayName"] if not pd.isna(row["displayName"]) else "",
-                "parameterName": row["parameterName"] if not pd.isna(row["parameterName"]) else "",
-                "scope": row["scope"] if not pd.isna(row["scope"]) else "",
-                "description": row["description"] if not pd.isna(row["description"]) else ""
-            })
+@dataclass
+class GoogleAnalyticsOperator(GoogleBase):
+    property_ids: list
+    api_key: str
+    api_action_list = [
+        "customDimensions",
+        "customMetrics",
+        "googleAdsLinks",
+        "audiences",
+    ]
+    base_url = "https://analyticsadmin.googleapis.com/v1alpha/properties"
 
-        return custom_dimention
-    
-    def create_google_ads_link(
-        property_ids: list,
-        customer_ids: list,
-        access_token: str,
-        api_key: str
-    ):
+    def set_api_action(self):
+        print("SELECT NUMBER")
+        for num, item in enumerate(self.api_action_list):
+            print(num, ": ", item)
 
-        headers = {
-            'Authorization': f'Bearer {access_token}',
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
+        try:
+            input_number = int(input())
+            self.api_action = self.api_action_list[input_number]
+            print(f"✅ You chose {self.api_action} method ✅")
 
-        for property_id in property_ids:
-            url = f'https://analyticsadmin.googleapis.com/v1alpha/properties/{property_id}/googleAdsLinks?key={api_key}'
-            print(property_id)
-         
-            for customer_id in customer_ids:
-                data = {
-                    'adsPersonalizationEnabled': 'false',
-                    'customerId': customer_id
-                }
+        except:
+            print("❌Check the input value. Only number❌")
+            exit()
 
-                response = requests.post(url, headers=headers, json=data)
-                print(response.content)
+    def get_full_api_url(self, property_id):
+        full_api_url = (
+            f"{self.base_url}/{property_id}/{self.api_action}?key={self.api_key}"
+        )
+        return full_api_url
