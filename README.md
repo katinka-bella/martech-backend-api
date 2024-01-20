@@ -22,6 +22,6 @@ martech-backend-api/
 │  |  |  |  ├─ main.py/
 │  |  |  ├─ tag-manager
 │  |  |  |  ├─ main.py/
-│  ├─ ...
+├─ utils/
 ├─ README.md
 ```
