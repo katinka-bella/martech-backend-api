@@ -22,11 +22,6 @@ class GoogleCloudeStorage:
         contents_token = self.read_bucket(self.bucket_sandbox, API_METHODS_FILE_PATH)
         return contents_token
 
-    def read_backend_api_method_gtm(self):
-        API_METHODS_FILE_PATH = "katia/api/google/tag-manager/main.py"
-        contents_token = self.read_bucket(self.bucket_sandbox, API_METHODS_FILE_PATH)
-        return contents_token
-
     def read_api_request(self):
         API_METHODS_FILE_PATH = "katia/utils/request.py"
         contents_token = self.read_bucket(self.bucket_sandbox, API_METHODS_FILE_PATH)

@@ -42,14 +42,9 @@ jobs:
       run: |-
         gcloud config list
         
-    - name: 'Delete existing files'
-      run: |-
-        gsutil -m rm -r gs://${{ github.event.inputs.bucket_name }}/${{ github.event.inputs.bucket_path }}/api
-        gsutil -m rm -r gs://${{ github.event.inputs.bucket_name }}/${{ github.event.inputs.bucket_path }}/utils
-        
     - name: 'Upload api'
       run: |-
-        gsutil -m cp -r api gs://${{ github.event.inputs.bucket_name }}/${{ github.event.inputs.bucket_path }}/api
+        gsutil -m cp -r api gs://${{ github.event.inputs.bucket_name }}/${{ github.event.inputs.bucket_path }}
         
     - name: 'Upload utils'
       run: |-
