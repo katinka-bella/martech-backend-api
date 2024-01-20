@@ -3,7 +3,7 @@
 
 ## about
 ...
-
+The API repository is an essential component of [the martech platform](https://github.com/katinka-bella/martech-platform), serving as the backend engine. Additionally, it automates the process of uploading files to the GCP bucket, ensuring seamless data management.
 
 ## structure
 ```
@@ -11,15 +11,17 @@ martech-backend-api/
 ├─ api/
 │  ├─ google/
 │  |  |  ├─ analytics
-│  |  |  |  ├─ create_cd.py/
-│  |  |  |  ├─ create_cm.py/
+│  |  |  |  ├─ main.py/
+│  |  |  |  ├─ utils.py/
 │  |  |  ├─ tag-manager
-│  |  |  |  ├─ create_account.py/
+│  |  |  |  ├─ main.py/
+│  |  |  ├─ bigquery
+│  |  |  |  ├─ main.py/
 │  ├─ adobe/
 │  |  |  ├─ analytics
-│  |  |  |  ├─ create_cd.py/
+│  |  |  |  ├─ main.py/
 │  |  |  ├─ tag-manager
-│  |  |  |  ├─ create_account.py/
+│  |  |  |  ├─ main.py/
 │  ├─ ...
 ├─ README.md
 ```
