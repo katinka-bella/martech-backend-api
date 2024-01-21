@@ -10,18 +10,20 @@ The repository is organized into modules representing different marketing techno
 martech-backend-api/
 ├─ api/
 │  ├─ google/
-│  |  |  ├─ analytics
-│  |  |  |  ├─ main.py/
-│  |  |  |  ├─ utils.py/
-│  |  |  ├─ tag-manager
-│  |  |  |  ├─ main.py/
-│  |  |  ├─ bigquery
-│  |  |  |  ├─ main.py/
+│  |  |  ├─ analytics/
+│  |  |  |  ├─ main.py
+│  |  |  |  ├─ utils.py
+│  |  |  ├─ tag-manager/
+│  |  |  |  ├─ main.py
+│  |  |  ├─ bigquery/
+│  |  |  |  ├─ main.py
 │  ├─ adobe/
-│  |  |  ├─ analytics
-│  |  |  |  ├─ main.py/
-│  |  |  ├─ tag-manager
-│  |  |  |  ├─ main.py/
+│  |  |  ├─ analytics/
+│  |  |  |  ├─ main.py
+│  |  |  ├─ tag-manager/
+│  |  |  |  ├─ main.py
 ├─ utils/
+│  ├─ gcs_connect.py
+│  ├─ gcs_connect_sandbox_katia.py
 ├─ README.md
 ```
