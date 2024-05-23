@@ -11,6 +11,8 @@ class GoogleBase:
     SCOPES = [
         "https://www.googleapis.com/auth/analytics",
         "https://www.googleapis.com/auth/analytics.edit",
+        "https://www.googleapis.com/auth/analytics.manage.users",
+        "https://www.googleapis.com/auth/analytics.manage.users.readonly",
     ]
     REDIRECT_URL = "https://localhost:8080/callback"
 
